@@ -1,27 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario Combinado</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
-    <h1>Inventario Combinado</h1>
+<body class="body-inventory">
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Inventario</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
 
-    <h2>Inventario de Materia Prima</h2>
-    <ul>
-        {% for materia in materias_primas %}
-            <li>{{ materia['nombre'] }}: {{ materia['cantidad'] }} unidades (Reorden: {{ materia['punto_reorden'] }}, Proveedor: {{ materia['proveedor'] }})</li>
-        {% endfor %}
-    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('materia_prima') }}">Materias Primas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('productos') }}">Productos Terminados</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-    <h2>Inventario de Productos Terminados</h2>
-    <ul>
-        {% for producto in productos %}
-            <li>{{ producto.nombre }}: {{ producto.cantidadDisponible }} unidades (Fecha de Producción: {{ producto.fechaProduccion }})</li>
-        {% endfor %}
-    </ul>
+    <div class="container-inventory">
+        <h1 class="text-center">Inventario Combinado</h1>
+        <div class="row mt-4">
+            <div class="col-md-6" id="materias">
+                <h2>Inventario de Materia Prima</h2>
+                <table class="table table-bordered table-light">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Reorden</th>
+                            <th>Proveedor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for materia in materias_primas %}
+                            <tr>
+                                <td>{{ materia['nombre'] }}</td>
+                                <td>{{ materia['cantidad'] }}</td>
+                                <td>{{ materia['punto_reorden'] }}</td>
+                                <td>{{ materia['proveedor'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6" id="productos">
+                <h2>Inventario de Productos Terminados</h2>
+                <table class="table table-bordered table-light">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cantidad Disponible</th>
+                            <th>Fecha de Producción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                            <tr>
+                                <td>{{ producto.nombre }}</td>
+                                <td>{{ producto.cantidadDisponible }}</td>
+                                <td>{{ producto.fechaProduccion }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <a href="{{ url_for('index') }}">Volver al inicio</a>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Volver al inicio</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
