@@ -1,0 +1,138 @@
+<!-- /templates/materia_prima.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Materia Prima</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="/static/styles.css">
+    
+  </head>
+<body>
+      <!-- navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+          <a class="navbar-brand me-auto" href="#">Textil Smart</a>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Acerca De</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('materia_prima') }}">Materia Prima</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('produccion') }}">Producción</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('productos') }}">Productos Terminados</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('conjunto_route') }}">Crear Conjunto</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+  <!-- hero section -->
+  <section class="hero-section">
+    <div class="container d-flex aling-items-center justify-content-center text-white flex-column">
+      <div class = "row">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-lx-4">
+          <h2>Gestión de Materia Prima</h2>
+          <form method="post">
+              <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre" required>
+              </div>
+              <div class="mb-3">
+                  <label for="descripcion" class="form-label">Descripción</label>
+                  <input type="text" name="descripcion" class="form-control" id="descripcion" placeholder="Descripción">
+              </div>
+              <div class="mb-3">
+                  <label for="cantidad" class="form-label">Cantidad</label>
+                  <input type="number" name="cantidad" class="form-control" id="cantidad" placeholder="Cantidad" required>
+              </div>
+              <div class="mb-3">
+                  <label for="punto_reorden" class="form-label">Punto de Reorden</label>
+                  <input type="number" name="punto_reorden" class="form-control" id="punto_reorden" placeholder="Punto de Reorden" required>
+              </div>
+              <div class="mb-3">
+                  <label for="proveedor" class="form-label">Proveedor</label>
+                  <input type="text" name="proveedor" class="form-control" id="proveedor" placeholder="Proveedor">
+              </div>
+              <div class="mb-3">
+                  <label for="fecha_adquisicion" class="form-label">Fecha de Adquisición</label>
+                  <input type="date" name="fecha_adquisicion" class="form-control" id="fecha_adquisicion" required>
+              </div>
+              <div class="d-grid gap-2">
+                  <button class="btn btn-primary" type="submit">Registrar Materia Prima</button>
+              </div>
+          </form>
+          
+        
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-lx-8">
+          <h2>Registros de Materia Prima</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="centrado">Nombre</th>
+                <th class="centrado">Descripción</th>
+                <th class="centrado">Cantidad</th>
+                <th class="centrado">Reorden</th>
+                <th class="centrado">Proveedor</th>
+                <th class="centrado">Fecha</th>
+                <th class="centrado">Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for materia in inventario %}
+              <tr>
+                <td class="centrado">{{ materia.nombre }}</td>
+                <td class="centrado">{{ materia.descripcion }}</td>
+                <td class="centrado">{{ materia.cantidad }}</td>
+                <td class="centrado">{{ materia.punto_reorden }}</td>
+                <td class="centrado">{{ materia.proveedor }}</td>
+                <td class="centrado">{{ materia.fecha_adquisicion}}</td>
+                <td class="centrado">
+                  {% if editar_id == materia.id %}
+                  <form method="post" action="{{ url_for('editar_materia_prima', id=materia.id) }}">
+                      <input type="text" name="nombre" value="{{ materia.nombre }}" required>
+                      <input type="text" name="descripcion" value="{{ materia.descripcion }}">
+                      <input type="number" name="cantidad" value="{{ materia.cantidad }}" required>
+                      <input type="number" name="punto_reorden" value="{{ materia.punto_reorden }}" required>
+                      <input type="text" name="proveedor" value="{{ materia.proveedor }}">
+                      <input type="date" name="fecha_adquisicion" value="{{ materia.fecha_adquisicion }}" required>
+                      <button type="submit">Guardar Cambios</button>
+                  </form>
+                  {% else %}
+                  <a href="{{ url_for('materia_prima', editar_id=materia.id) }}">Editar</a>
+              {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+              <li><a href="{{ url_for('inventario_combinado') }}">Inventario Combinado</a></li>
+
+            </tbody>
+          </table>
+        </div>
+      </div>  
+    </div>
+  </section>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>

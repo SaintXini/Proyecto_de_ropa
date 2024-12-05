@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Combinado</title>
+</head>
+<body>
+    <h1>Inventario Combinado</h1>
+
+    <h2>Inventario de Materia Prima</h2>
+    <ul>
+        {% for materia in materias_primas %}
+            <li>{{ materia['nombre'] }}: {{ materia['cantidad'] }} unidades (Reorden: {{ materia['punto_reorden'] }}, Proveedor: {{ materia['proveedor'] }})</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Inventario de Productos Terminados</h2>
+    <ul>
+        {% for producto in productos %}
+            <li>{{ producto.nombre }}: {{ producto.cantidadDisponible }} unidades (Fecha de Producción: {{ producto.fechaProduccion }})</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('index') }}">Volver al inicio</a>
+</body>
+</html>

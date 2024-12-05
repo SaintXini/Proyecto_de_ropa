@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textil Smart - Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="/static/styles.css">
+
+</head>
+<body>
+  <!-- navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+          <a class="navbar-brand me-auto" href="#">Textil Smart</a>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Acerca De</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('materia_prima') }}">Materia Prima</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('produccion') }}">Producción</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('productos') }}">Productos Terminados</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('conjunto_route') }}">Crear Conjunto</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+  <!-- hero section -->
+    <section class="hero-section">
+      <div class="container d-flex aling-items-center justify-content-center text-white flex-column">
+          <h1> Textil Smart</h1>
+          <h2> Bienvenidos</h2>
+
+      </div>
+    </section>
+
+    <div id="notificaciones" class="alert alert-info" role="alert">
+      <h2>Notificaciones</h2>
+      <div id="lista-notificaciones"></div>
+  </div>
+  
+  <script>
+      function actualizarNotificaciones() {
+          fetch('/notificaciones')
+              .then(response => response.json())
+              .then(data => {
+                  const listaNotificaciones = document.getElementById('lista-notificaciones');
+                  listaNotificaciones.innerHTML = '';
+  
+                  data.compras.forEach(notificacion => {
+                      const elem = document.createElement('div');
+                      elem.className = 'alert alert-warning';
+                      elem.textContent = `${notificacion.fecha}: ${notificacion.mensaje}`;
+                      listaNotificaciones.appendChild(elem);
+                  });
+  
+                  data.produccion.forEach(notificacion => {
+                      const elem = document.createElement('div');
+                      elem.className = 'alert alert-success';
+                      elem.textContent = `${notificacion.fecha}: ${notificacion.mensaje}`;
+                      listaNotificaciones.appendChild(elem);
+                  });
+              });
+      }
+  
+      setInterval(actualizarNotificaciones, 30000);
+      actualizarNotificaciones();
+  </script>
+  
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>

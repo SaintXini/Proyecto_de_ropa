@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos Terminados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+        function toggleForm(formId) {
+            var form = document.getElementById(formId);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+        <a class="navbar-brand me-auto" href="#">Textil Smart</a>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Acerca De</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('materia_prima') }}">Materia Prima</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('produccion') }}">Producción</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('productos') }}">Productos Terminados</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('conjunto_route') }}">Crear Conjunto</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+  <!-- hero section -->
+  <section class="hero-section">
+    <div class="container d-flex aling-items-center justify-content-center text-white flex-column">
+        <div class = "row">
+            <div class="col-sm-12 col-md-4 col-lg-4 col-lx-4">
+              <h2>Gestión de Productos Terminados</h2>
+              <form method="post" action="{{ url_for('productos') }}">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre Producto" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción</label>
+                    <input type="text" name="descripcion" class="form-control" id="descripcion" placeholder="Descripción">
+                </div>
+                <div class="mb-3">
+                    <label for="cantidad" class="form-label">Disponibilidad</label>
+                    <input type="number" name="cantidad" class="form-control" id="cantidad" placeholder="Disponibilidad" required>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_produccion" class="form-label">Fecha de Producción</label>
+                    <input type="date" name="fecha_produccion" class="form-control" id="fecha_produccion" required>
+                </div>
+                <div class="mb-3">
+                    <label for="id_produccion" class="form-label">#Del Producto</label>
+                    <input type="number" name="id_produccion" class="form-control" id="id_produccion" placeholder="ID Produccion" required>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">Registrar Producto Terminado</button>
+                </div>
+            </form>
+            </div>
+
+            <div class="col-sm-13 col-md-8 col-lg-8 col-lx-8">
+                <h2>Registro de Productos Terminados</h2>
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="centrado">Producto</th>
+                                <th class="centrado">Descripción</th>
+                                <th class="centrado">Disponibilidad</th>
+                                <th class="centrado">Fecha</th>
+                                <th class="centrado">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producto in productos %}
+                            <tr id="row-{{ producto.id }}">
+                                <td class="centrado">{{ producto.nombre }}</td>
+                                <td class="centrado">{{ producto.descripcion }}</td>
+                                <td class="centrado">{{ producto.cantidadDisponible }}</td>
+                                <td class="centrado">{{ producto.fechaProduccion }}</td>
+                                <td class="centrado">
+                                    <button id="editButton{{ producto.id }}" onclick="toggleForm('{{ producto.id }}')">Editar</button>
+                                    <form method="post" action="{{ url_for('retirar_producto_route', producto_id=producto.id) }}" style="display: inline;">
+                                        <button type="submit" onclick="return confirm('¿Está seguro de querer retirar este producto?')">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr id="form-row-{{ producto.id }}" style="display: none;">
+                                <td colspan="5">
+                                    <form id="updateForm{{ producto.id }}" method="post" action="{{ url_for('actualizar_producto_route', producto_id=producto.id) }}">
+                                        <input type="text" name="nombre" placeholder="Nuevo nombre" value="{{ producto.nombre }}">
+                                        <input type="text" name="descripcion" placeholder="Nueva descripción" value="{{ producto.descripcion }}">
+                                        <input type="number" name="cantidad" placeholder="Nueva cantidad" value="{{ producto.cantidadDisponible }}">
+                                        <input type="date" name="fecha_produccion" value="{{ producto.fechaProduccion }}">
+                                    </form>
+                                </td>
+                                <td class="centrado">
+                                    <button type="submit" form="updateForm{{ producto.id }}">Guardar</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                          <li><a href="{{ url_for('inventario_combinado') }}">Inventario Combinado</a></li>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function toggleForm(productId) {
+    const formRow = document.getElementById('form-row-' + productId);
+    const editButton = document.getElementById('editButton' + productId);
+    
+    if (formRow.style.display === 'none') {
+        formRow.style.display = 'table-row'; // Muestra el formulario
+        editButton.style.display = 'none'; // Oculta el botón de actualizar
+    } else {
+        formRow.style.display = 'none'; // Oculta el formulario
+        editButton.style.display = 'inline'; // Muestra el botón de actualizar
+    }
+}
+</script>
+    
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>

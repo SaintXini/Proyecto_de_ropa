@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear y Ver Conjunto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand me-auto" href="#">Textil Smart</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Acerca De</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('materia_prima') }}">Materia Prima</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('produccion') }}">Producción</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('productos') }}">Productos Terminados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('conjunto_route') }}">Crear Conjunto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section bg-dark text-white vh-100 d-flex justify-content-center align-items-center" style="margin-top: 130px;"> <!-- Aumentado el margen superior -->
+        <div class="container text-center">
+            <h1 class="display-4">Crear y Ver Conjunto de Ropa</h1>
+            <form method="post" class="my-4">
+                <div class="form-group mb-3">
+                    <label for="tipo_conjunto" class="form-label">Selecciona el Tipo de Conjunto:</label>
+                    <select name="tipo_conjunto" id="tipo_conjunto" class="form-select" required>
+                        <option value="invierno">Conjunto de Invierno</option>
+                        <option value="verano">Conjunto de Verano</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Crear Conjunto</button>
+            </form>
+
+            {% if conjunto %}
+                <h2 class="mt-4">Conjunto Creado</h2>
+                <ul class="list-group list-group-flush">
+                    {% for item in conjunto %}
+                        <li class="list-group-item bg-dark text-white">{{ item.mostrar_info() }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>

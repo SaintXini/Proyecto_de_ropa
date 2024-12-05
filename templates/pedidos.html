@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <!-- navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+        <a class="navbar-brand me-auto" href="#">Textil Smart</a>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Acerca De</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('materia_prima') }}">Materia Prima</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('produccion') }}">Producción</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('productos') }}">Productos Terminados</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('conjunto_route') }}">Crear Conjunto</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+  <!-- hero section -->
+  <section class="hero-section">
+    <div class="container d-flex aling-items-center justify-content-center text-white flex-column">
+
+        <h1>Gestión de Pedidos</h1>
+        <form method="post">
+            <input type="text" name="cliente_name" placeholder="Nombre del Cliente" required>
+            <input type="text" name="producto" placeholder="Producto" required>
+            <input type="number" name="cantidad" placeholder="Cantidad" required>
+            <input type="date" name="fecha_pedido" required>
+            <input type="text" name="direccion_envio" placeholder="Dirección de Envío" required>
+            <select name="estado" required>
+                <option value="pendiente">Pendiente</option>
+                <option value="completado">Completado</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
+            <select name="tipo_distribucion" required>
+                <option value="rapida">Distribución Rápida</option>
+                <option value="economica">Distribución Económica</option>
+            </select>
+            <button type="submit">Registrar Pedido</button>
+        </form>
+    
+        <h2>Lista de Pedidos</h2>
+        <ul>
+            {% if pedidos %}
+                {% for pedido in pedidos %}
+                <li>
+                    ID: {{ pedido['id'] }} | Producto: {{ pedido['producto'] }} | 
+                    Cantidad: {{ pedido['cantidad'] }} | Estado: {{ pedido['estado'] }} | Fecha: {{ pedido['fechaPedido'] }} | 
+                    Dirección: {{ pedido['direccionEnvio'] }} | Tipo de Distribución: {{ pedido['tipo_distribucion'] }}
+                </li>
+                {% endfor %}
+            {% else %}
+                <li>No hay pedidos registrados.</li>
+            {% endif %}
+        </ul>
+    
+    </div>
+  </section>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
