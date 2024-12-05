@@ -22,7 +22,7 @@ Consiste en un sistema de gestión de ropa realizado como proyecto final del cur
 - Creación de producciones y visualizción de los etados
 - Gestion de productos terminados
 - Creación de conjuntos dependiendo la temporada
-https://github.com/user-attachments/assets/9d166264-de5e-4d45-bde1-9dbbbefab728
+- https://github.com/user-attachments/assets/9d166264-de5e-4d45-bde1-9dbbbefab728
 
 ### **Estado**
 Finalizado
