@@ -92,4 +92,4 @@ python app.py
 
 **Martín Santiago Con Xinico**
 
-[LinkedIn](https://www.linkedin.com/in/martín-conxinico) · [GitHub](https://github.com/SaintXini)
+[LinkedIn](https://www.linkedin.com/in/mart%C3%ADn-con-xinico/?skipRedirect=true) · [GitHub](https://github.com/SaintXini)
